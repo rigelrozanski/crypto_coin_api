@@ -24,9 +24,9 @@ type Trade struct {
 }
 
 type SubAccount struct {
-	Currency Currency
+	Currency string
 	Amount,
-	ForzenAmount,
+	FrozenAmount,
 	LoanAmount float64
 }
 
@@ -34,7 +34,7 @@ type Account struct {
 	Exchange    string
 	Asset       float64 //总资产
 	NetAsset    float64 //净资产
-	SubAccounts map[Currency]SubAccount
+	SubAccounts map[string]SubAccount
 }
 
 type Ticker struct {

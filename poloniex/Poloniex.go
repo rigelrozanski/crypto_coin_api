@@ -362,34 +362,15 @@ func (poloniex *Poloniex) GetAccount() (*Account, error) {
 
 	acc := new(Account)
 	acc.Exchange = EXCHANGE_NAME
-	acc.SubAccounts = make(map[Currency]SubAccount)
+	acc.SubAccounts = make(map[string]SubAccount)
 
 	for k, v := range respmap {
-		var currency Currency
-
-		switch k {
-		case "BTC":
-			currency = BTC
-		case "LTC":
-			currency = LTC
-		case "ETH":
-			currency = ETH
-		case "ETC":
-			currency = ETC
-		case "USD":
-			currency = USD
-		default:
-			currency = -1
-		}
-
-		if currency > 0 {
-			vv := v.(map[string]interface{})
-			subAcc := SubAccount{}
-			subAcc.Currency = currency
-			subAcc.Amount, _ = strconv.ParseFloat(vv["available"].(string), 64)
-			subAcc.ForzenAmount, _ = strconv.ParseFloat(vv["onOrders"].(string), 64)
-			acc.SubAccounts[subAcc.Currency] = subAcc
-		}
+		vv := v.(map[string]interface{})
+		subAcc := SubAccount{}
+		subAcc.Currency = k
+		subAcc.Amount, _ = strconv.ParseFloat(vv["available"].(string), 64)
+		subAcc.FrozenAmount, _ = strconv.ParseFloat(vv["onOrders"].(string), 64)
+		acc.SubAccounts[subAcc.Currency] = subAcc
 	}
 
 	return acc, nil
